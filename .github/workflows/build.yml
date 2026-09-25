@@ -1,11 +1,11 @@
 name: build.yml
 on:
   push:
-    branches:
+分支:
       - development
 
   pull_request:
-    branches:
+分支:
       - development
 
 permissions:
@@ -26,6 +26,9 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+
+      - name: Setup with Gradle
+        run: ./gradlew :neoforge:setup -PvalidateAccessTransformers
 
       - name: Build with Gradle
         run: ./gradlew clean build --no-daemon
