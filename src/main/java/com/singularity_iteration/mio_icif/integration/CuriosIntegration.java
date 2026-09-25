@@ -1,12 +1,17 @@
 package com.singularity_iteration.mio_icif.integration;
 
+import com.singularity_iteration.mio_icif.Items.Armor.mio_icif_items_armors;
 import com.singularity_iteration.mio_icif.Singularity_Iteration;
 
+import com.singularity_iteration.mio_icif.integration.curios.AdvancedJetpackCurioItem;
+import com.singularity_iteration.mio_icif.integration.curios.JetpackCurioItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.fml.ModList;
+import top.theillusivec4.curios.api.CuriosApi;
 
 /**
  * Curios API 集成类
@@ -63,6 +68,17 @@ public class CuriosIntegration {
     public static void register(IEventBus eventBus) {
         if (isCuriosLoaded()) {
             TRINKET_ITEMS.register(eventBus);
+
+            // 通过API注册一些ICurioItem
+            eventBus.addListener(CuriosIntegration::registerCurios);
         }
+    }
+
+    /**
+     * 注册饰品 - 通过 API的 registerCurio 来避免直接依赖 Curios
+     */
+    protected static void registerCurios(FMLCommonSetupEvent eventBus) {
+        CuriosApi.registerCurio(mio_icif_items_armors.ARMOR_JETPACK_ELECTRIC.get(), new JetpackCurioItem());
+        CuriosApi.registerCurio(mio_icif_items_armors.ARMOR_ADVANCED_JETPACK.get(), new AdvancedJetpackCurioItem());
     }
 }

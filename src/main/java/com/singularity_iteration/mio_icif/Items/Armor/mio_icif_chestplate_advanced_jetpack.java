@@ -29,7 +29,7 @@ import java.util.WeakHashMap;
  * - 喷气/悬停模式飞行，支持加速
  */
 @SuppressWarnings({"null", "deprecation"})
-public class mio_icif_chestplate_advanced_jetpack extends mio_icif_armor_elc implements IJetpackItem, ICurioItem {
+public class mio_icif_chestplate_advanced_jetpack extends mio_icif_armor_elc implements IJetpackItem {
 
     public static final int MAX_ENERGY = 1000000;
     public static final int CHARGE_RATE = 512;
@@ -120,23 +120,7 @@ public class mio_icif_chestplate_advanced_jetpack extends mio_icif_armor_elc imp
         }
     }
 
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        if (!(slotContext.entity() instanceof Player player)) return;
-        if (!slotContext.identifier().equals("back")) return;
-
-        ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-        if (!chestStack.isEmpty() && chestStack.getItem() instanceof mio_icif_chestplate_advanced_jetpack) return;
-
-        tickJetpack(player, stack, player.level());
-    }
-
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return slotContext.identifier().equals("back");
-    }
-
-    private void tickJetpack(Player player, ItemStack actualStack, Level level) {
+    public void tickJetpack(Player player, ItemStack actualStack, Level level) {
         int currentMode = getModeInternal(actualStack);
         long currentEnergy = getEnergy(actualStack);
         int toggleTimer = getToggleTimer(actualStack);

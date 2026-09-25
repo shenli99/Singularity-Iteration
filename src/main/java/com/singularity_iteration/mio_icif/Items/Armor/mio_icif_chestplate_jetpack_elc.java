@@ -29,7 +29,7 @@ import java.util.WeakHashMap;
  * 基于IC2 JetpackLogic重构，修复各种bug
  */
 @SuppressWarnings({"null", "deprecation"})
-public class mio_icif_chestplate_jetpack_elc extends mio_icif_armor_elc implements IJetpackItem, ICurioItem {
+public class mio_icif_chestplate_jetpack_elc extends mio_icif_armor_elc implements IJetpackItem {
 
     // ========== IC2 标准属性 ==========
     // 最大电量 30,000 EU (IC2标准)
@@ -148,23 +148,7 @@ public class mio_icif_chestplate_jetpack_elc extends mio_icif_armor_elc implemen
         }
     }
 
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        if (!(slotContext.entity() instanceof Player player)) return;
-        if (!slotContext.identifier().equals("back")) return;
-
-        ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-        if (!chestStack.isEmpty() && chestStack.getItem() instanceof mio_icif_chestplate_jetpack_elc) return;
-
-        tickJetpack(player, stack, player.level());
-    }
-
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return slotContext.identifier().equals("back");
-    }
-
-    private void tickJetpack(Player player, ItemStack actualStack, Level level) {
+    public void tickJetpack(Player player, ItemStack actualStack, Level level) {
         int currentMode = getModeInternal(actualStack);
         long currentEnergy = getEnergy(actualStack);
         int toggleTimer = getToggleTimer(actualStack);
