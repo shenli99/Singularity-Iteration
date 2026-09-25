@@ -324,7 +324,7 @@ public class mio_icif_gui_canner_elc extends mio_icif_screen<com.singularity_ite
     @Override
     protected void renderSlot(GuiGraphics guiGraphics, Slot slot) {
         // 在单元水槽模式下隐藏材料槽
-        if (slot.index == CannerElcMenu.MATERIAL_SLOT && this.menu.getMode() == 1) {
+        if (slot.index == CannerElcMenu.MATERIAL_SLOT && (this.menu.getMode() == 1 || this.menu.getMode() == 2)) {
             // 不渲染材料槽
             return;
         }
