@@ -4,6 +4,7 @@ import com.singularity_iteration.mio_icif.Blocks.entity.mio_icif_block_entities;
 import com.singularity_iteration.mio_icif.Items.Cell.mio_icif_cells;
 import com.singularity_iteration.mio_icif.Blocks.entity.mio_icif_producer;
 import com.singularity_iteration.mio_icif.Blocks.entity.slot.SlotLayout;
+import com.singularity_iteration.mio_icif.Items.Resource.mio_icif_resources;
 import com.singularity_iteration.mio_icif.energy.EnergyUnit.CableTier;
 import com.singularity_iteration.mio_icif.recipe.canner.canning.CanningRecipe;
 import com.singularity_iteration.mio_icif.recipe.canner.canning.CanningRecipeInput;
@@ -242,7 +243,7 @@ protected final FluidTank outputFluidTank;
         return switch (currentMode) {
             case CANNING -> {
                 yield stack.getItem().getFoodProperties(stack, null) != null
-                    || stack.is(com.singularity_iteration.mio_icif.Items.Resource.mio_icif_resources.URAN_238.get())
+                    || stack.is(mio_icif_resources.URAN.get())
                     || stack.is(com.singularity_iteration.mio_icif.Items.Resource.mio_icif_resources.MOX.get());
             }
             case EMPTY_TO_TANK -> {
