@@ -49,7 +49,11 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.phys.AABB;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -65,6 +69,8 @@ public class mio_icif_block_wire extends mio_icif_entity_block implements Simple
     // 导电范围（方块半径）
     @SuppressWarnings("unused")
     private static final int CONDUCTIVITY_RANGE = 32;
+
+    private static final Map<Byte, VoxelShape> SHAPE_CACHE = new HashMap<>();
 
     /**
      * 获取电击伤害值，根据电缆等级递增
@@ -172,12 +178,19 @@ public class mio_icif_block_wire extends mio_icif_entity_block implements Simple
     
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return getCombinedShape(state);
+        return SHAPE_CACHE.computeIfAbsent(
+                indexOf(state),
+                ($) -> getCombinedShape(state)
+        );
     }
     
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return getCombinedShape(state);
+        Byte index = indexOf(state);
+        return SHAPE_CACHE.computeIfAbsent(
+                index,
+                ($) -> getCombinedShape(state)
+        );
     }
     
     private VoxelShape getCombinedShape(BlockState state) {
@@ -739,5 +752,17 @@ public class mio_icif_block_wire extends mio_icif_entity_block implements Simple
         double ly = hitVec.y - pos.getY();
         double lz = hitVec.z - pos.getZ();
         return lx >= 0.375 && lx <= 0.625 && ly >= 0.375 && ly <= 0.625 && lz >= 0.375 && lz <= 0.625;
+    }
+
+    protected static byte indexOf(BlockState state) {
+        int i = 0;
+        if (state.getValue(NORTH)) i += 1 << 0;
+        if (state.getValue(SOUTH)) i += 1 << 1;
+        if (state.getValue(EAST)) i += 1 << 2;
+        if (state.getValue(WEST)) i += 1 << 3;
+        if (state.getValue(UP)) i += 1 << 4;
+        if (state.getValue(DOWN)) i += 1 << 5;
+
+        return (byte) i;
     }
 }
