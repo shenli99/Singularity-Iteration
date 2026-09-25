@@ -1,11 +1,11 @@
 name: build.yml
 on:
   push:
-    branches:
+分支:
       - development
 
   pull_request:
-    branches:
+分支:
       - development
 
 permissions:
