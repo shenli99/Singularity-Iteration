@@ -315,10 +315,10 @@ public class EnergyCalculator implements IEnergyCalculator {
                             if (neighbor.getType() == NodeType.Source) {
                                 List<EnergyPath> srcPaths = data.energySourceToEnergyPathMap.get(neighbor);
                                 if (srcPaths != null && !srcPaths.isEmpty()) {
-                                    loss -= optLink.loss;
+                                    double innerLoss = loss - optLink.loss;
                                     List<Node> pathToHere = null;
                                     for (EnergyPath cPath : srcPaths) {
-                                        double cLoss = loss + cPath.loss;
+                                        double cLoss = innerLoss + cPath.loss;
                                         IEnergyTile t = cPath.target.getTile().getMainTile();
                                         EnergyPath p = pathsMap.get(t);
                                         if (p != null && p.loss <= cLoss) continue;
